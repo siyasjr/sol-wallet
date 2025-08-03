@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { generateMnemonic } from "@/lib/wallet-logic";
 
 export function WalletGenerator() {
   const [mnemonic, setMnemonic] = useState("");
@@ -12,11 +13,12 @@ export function WalletGenerator() {
   const [privateKey, setPrivateKey] = useState("");
   const [showPrivate, setShowPrivate] = useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     // TEMP: fake keys for now
-    setMnemonic("abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about");
-    setPublicKey("PublicKey123");
-    setPrivateKey("PrivateKey123");
+    const {mnemonic, publicKey, privateKey } = await generateMnemonic();
+    setMnemonic(mnemonic);
+    setPublicKey(publicKey);
+    setPrivateKey(privateKey);
   };
 
   const handleToggle = () => {
