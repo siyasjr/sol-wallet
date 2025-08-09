@@ -33,10 +33,23 @@ export function WalletGenerator() {
       <CardContent className="space-y-4">
         <Button onClick={handleGenerate}>Generate Wallet</Button>
 
-        <div>
-          <label className="text-sm font-medium">Mnemonic</label>
-          <Textarea value={mnemonic} readOnly className="mt-1" />
-        </div>
+       <div>
+  <label className="text-sm font-medium">Mnemonic</label>
+  <div className="grid grid-cols-4 gap-2 mt-1">
+    {mnemonic.trim().split(/\s+/).map((word, index) => (
+        <Input
+          key={index}
+          value={word}
+          readOnly
+          
+          className="w-full !h-10 resize-none"
+        />
+      ))}
+      <Input value={mnemonic.slice()} readOnly/>
+  </div>
+  
+</div>
+
 
         <div>
           <label className="text-sm font-medium">Public Key</label>
