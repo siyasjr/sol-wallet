@@ -34,20 +34,28 @@ export function WalletGenerator() {
     });
   };
 
+    const handleCopyPub = () => {
+      if (!publicKey) return;
+     navigator.clipboard.writeText(publicKey).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 800); // reset after 1.5s
+    });
+  };
+
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>
         <CardTitle>Generate Wallet</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Button onClick={handleGenerate}>Generate Wallet</Button>
+        <Button onClick={handleGenerate}>Generate</Button>
 
-
+{ mnemonic && (
        <div>
        
   <label className="text-sm font-medium">Mnemonic</label>
 
-  { mnemonic && (
+  
   <div className="grid grid-cols-4 gap-2 mt-1 cursor-pointer border p-2 rounded-lg hover:bg-gray-50" onClick={handleCopy} >
     {mnemonic.trim().split(/\s+/).map((word, index) => (
         <Input
@@ -65,21 +73,21 @@ export function WalletGenerator() {
         </span>
       )}
 
-      
+       
   </div>
 
-    )}
+   
   
 </div>
+)}
 
-
-        <div>
+        <div onClick={handleCopyPub}>
           <label className="text-sm font-medium">Public Key</label>
           <Input value={publicKey} readOnly className="mt-1" />
         </div>
 
         <div>
-          <label className="text-sm font-medium flex justify-between items-center">
+          <label className="text-sm font-medium flex justify-between items-center" onClick={handleCopy}>
             Private Key
             <Button variant="ghost" size="sm" onClick={handleToggle}>
               {showPrivate ? "Hide" : "Show"}
