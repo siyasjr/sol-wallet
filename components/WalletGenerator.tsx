@@ -12,6 +12,7 @@ export function WalletGenerator() {
   const [publicKey, setPublicKey] = useState("");
   const [privateKey, setPrivateKey] = useState("");
   const [showPrivate, setShowPrivate] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleGenerate = async () => {
     // TEMP: fake keys for now
@@ -25,6 +26,14 @@ export function WalletGenerator() {
     setShowPrivate((prev) => !prev);
   };
 
+  const handleCopy = () => {
+      if (!mnemonic) return;
+     navigator.clipboard.writeText(mnemonic).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 800); // reset after 1.5s
+    });
+  };
+
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>
@@ -33,9 +42,13 @@ export function WalletGenerator() {
       <CardContent className="space-y-4">
         <Button onClick={handleGenerate}>Generate Wallet</Button>
 
+
        <div>
+       
   <label className="text-sm font-medium">Mnemonic</label>
-  <div className="grid grid-cols-4 gap-2 mt-1">
+
+  { mnemonic && (
+  <div className="grid grid-cols-4 gap-2 mt-1 cursor-pointer border p-2 rounded-lg hover:bg-gray-50" onClick={handleCopy} >
     {mnemonic.trim().split(/\s+/).map((word, index) => (
         <Input
           key={index}
@@ -45,8 +58,17 @@ export function WalletGenerator() {
           className="w-full !h-10 resize-none"
         />
       ))}
+        
+       {copied && (
+        <span className="text-green-500 text-sm mt-1 block">
+          ✅ Copied!
+        </span>
+      )}
+
       
   </div>
+
+    )}
   
 </div>
 
