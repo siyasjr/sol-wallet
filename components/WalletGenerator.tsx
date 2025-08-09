@@ -3,16 +3,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { generateMnemonic } from "@/lib/wallet-logic";
+import { toast } from "sonner";
 
 export function WalletGenerator() {
   const [mnemonic, setMnemonic] = useState("");
   const [publicKey, setPublicKey] = useState("");
   const [privateKey, setPrivateKey] = useState("");
   const [showPrivate, setShowPrivate] = useState(false);
-  const [copied, setCopied] = useState(false);
+  
 
   const handleGenerate = async () => {
     // TEMP: fake keys for now
@@ -29,16 +29,25 @@ export function WalletGenerator() {
   const handleCopy = () => {
       if (!mnemonic) return;
      navigator.clipboard.writeText(mnemonic).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 800); // reset after 1.5s
+     toast("copied")
+      
     });
   };
 
     const handleCopyPub = () => {
       if (!publicKey) return;
      navigator.clipboard.writeText(publicKey).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 800); // reset after 1.5s
+       toast("copied")
+      
+      
+    });
+  };
+
+    const handleCopyPrv = () => {
+      if (!privateKey) return;
+     navigator.clipboard.writeText(privateKey).then(() => {
+     toast("copied")
+      
     });
   };
 
@@ -67,27 +76,26 @@ export function WalletGenerator() {
         />
       ))}
         
-       {copied && (
-        <span className="text-green-500 text-sm mt-1 block">
-          ✅ Copied!
-        </span>
-      )}
+      
 
        
   </div>
-
+ 
    
   
 </div>
 )}
-
-        <div onClick={handleCopyPub}>
+   { publicKey && (
+        <div >
+          
           <label className="text-sm font-medium">Public Key</label>
-          <Input value={publicKey} readOnly className="mt-1" />
+          <Input value={publicKey} readOnly className="mt-1" onClick={handleCopyPub} />
         </div>
+   )}
 
+   {privateKey && (
         <div>
-          <label className="text-sm font-medium flex justify-between items-center" onClick={handleCopy}>
+          <label className="text-sm font-medium flex justify-between items-center" >
             Private Key
             <Button variant="ghost" size="sm" onClick={handleToggle}>
               {showPrivate ? "Hide" : "Show"}
@@ -98,8 +106,13 @@ export function WalletGenerator() {
             value={privateKey}
             readOnly
             className="mt-1"
+            onClick={handleCopyPrv}
           />
         </div>
+
+        )}
+
+   
       </CardContent>
     </Card>
   );
