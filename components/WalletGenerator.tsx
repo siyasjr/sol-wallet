@@ -45,7 +45,7 @@ export function WalletGenerator() {
           className="w-full !h-10 resize-none"
         />
       ))}
-      <Input value={mnemonic.slice()} readOnly/>
+      
   </div>
   
 </div>
