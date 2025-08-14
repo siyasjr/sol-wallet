@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { generateMnemonic } from "@/lib/wallet-logic";
 import { toast } from "sonner";
 
+
 export function WalletGenerator() {
   const [mnemonic, setMnemonic] = useState("");
   const [publicKey, setPublicKey] = useState("");
@@ -26,13 +27,15 @@ export function WalletGenerator() {
     setShowPrivate((prev) => !prev);
   };
 
-  const handleCopy = () => {
-      if (!mnemonic) return;
-     navigator.clipboard.writeText(mnemonic).then(() => {
-     toast("copied")
-      
-    });
-  };
+ const handleCopy = () => {
+  if (!mnemonic || typeof navigator === "undefined" || !navigator.clipboard) return;
+
+  navigator.clipboard.writeText(mnemonic).then(() => {
+    toast("copied");
+  }).catch(() => {
+    toast("failed to copy");
+  });
+};
 
     const handleCopyPub = () => {
       if (!publicKey) return;
