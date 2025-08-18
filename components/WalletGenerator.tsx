@@ -17,10 +17,10 @@ export function WalletGenerator() {
 
   const handleGenerate = async () => {
     // TEMP: fake keys for now
-    const {mnemonic, publicKey, privateKey } = await generateSolanaHDWallet();
+    const {mnemonic, publicKeyBase58, secretKeyBase58 } = await generateSolanaHDWallet();
     setMnemonic(mnemonic);
-    setPublicKey(publicKey);
-    setPrivateKey(privateKey);
+    setPublicKey(publicKeyBase58);
+    setPrivateKey(secretKeyBase58);
   };
 
   const handleToggle = () => {
