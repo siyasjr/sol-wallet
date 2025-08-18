@@ -1,6 +1,7 @@
 import * as bip39 from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import nacl from "tweetnacl";
+import bs58 from "bs58";
 
 export async function generateSolanaHDWallet() {
   // 1. Generate a 12-word mnemonic
@@ -20,7 +21,12 @@ export async function generateSolanaHDWallet() {
   const publicKey = Buffer.from(keypair.publicKey).toString("hex");
   const privateKey = Buffer.from(keypair.secretKey).toString("hex");
 
-  return { mnemonic, path, publicKey, privateKey };
+  const publicKeyBase58 = bs58.encode(Buffer.from(keypair.publicKey));
+  const secretKeyBase58 = bs58.encode(Buffer.from(keypair.secretKey));
+
+  
+
+  return { mnemonic, path, publicKey, privateKey , publicKeyBase58, secretKeyBase58 };
 }
 
 // Example usage:
