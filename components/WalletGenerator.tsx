@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { generateMnemonic } from "@/lib/wallet-logic";
+import { generateSolanaHDWallet } from "@/lib/wallet-logic";
 import { toast } from "sonner";
 
 
@@ -17,7 +17,7 @@ export function WalletGenerator() {
 
   const handleGenerate = async () => {
     // TEMP: fake keys for now
-    const {mnemonic, publicKey, privateKey } = await generateMnemonic();
+    const {mnemonic, publicKey, privateKey } = await generateSolanaHDWallet();
     setMnemonic(mnemonic);
     setPublicKey(publicKey);
     setPrivateKey(privateKey);
