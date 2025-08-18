@@ -57,7 +57,7 @@ export function WalletGenerator() {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader>
-        <CardTitle>Generate Wallet</CardTitle>
+        <CardTitle>Generate Solana Wallet</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button onClick={handleGenerate}>Generate</Button>
