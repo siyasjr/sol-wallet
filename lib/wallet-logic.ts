@@ -1,20 +1,27 @@
 import * as bip39 from "bip39";
+import { derivePath } from "ed25519-hd-key";
 import nacl from "tweetnacl";
-//import nacl from "tweetnacl";
-//import { Keypair } from "@solana/web3.js";
 
-export async function generateMnemonic(){
-    const mnemonic = bip39.generateMnemonic(); // 12 word seed
-    const seed = await bip39.mnemonicToSeed(mnemonic) //64 bytes
+export async function generateSolanaHDWallet() {
+  // 1. Generate a 12-word mnemonic
+  const mnemonic = bip39.generateMnemonic();
 
-    const seedBuffer = seed.slice(0,32); // get first 32 bytes from seed
-    const keypair = nacl.sign.keyPair.fromSeed(seedBuffer);  //EDDSA ED25519 curve
+  // 2. Convert mnemonic to seed (64 bytes)
+  const seed = await bip39.mnemonicToSeed(mnemonic);
 
+  // 3. Derive path using SLIP-0010 for Ed25519
+  // Standard Solana path: m/44'/501'/0'/0'
+  const path = `m/44'/501'/0'/0'`;
+  const derivedSeed = derivePath(path, seed.toString("hex")).key;
 
-    const publicKey = Buffer.from(keypair.publicKey).toString('hex'); // convert pubkey to hex encoded string
-    const privateKey = Buffer.from(keypair.secretKey).toString('hex'); // convert pvtkey to hex encoded string
+  // 4. Generate keypair from derived seed
+  const keypair = nacl.sign.keyPair.fromSeed(derivedSeed);
 
+  const publicKey = Buffer.from(keypair.publicKey).toString("hex");
+  const privateKey = Buffer.from(keypair.secretKey).toString("hex");
 
-    return { mnemonic, publicKey, privateKey } ;
+  return { mnemonic, path, publicKey, privateKey };
+}
 
-};
+// Example usage:
+generateSolanaHDWallet().then(console.log);
